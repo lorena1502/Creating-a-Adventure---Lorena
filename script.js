@@ -33,14 +33,15 @@ const perguntas = [
                 afirmacao: ["Você bate colocado no canto, mas o goleiro se estica e faz uma grande defesa!", 
                 "Você solta uma bomba de fora da área. A bola passa muito perto da trave e assusta o goleiro.",
                 "Você chuta rasteiro no meio dos defensores. O goleiro espalma, e o Flamengo ganha um escanteio.",
-            
-            
             ]
 
             },
             {
                 texto: "B) 🤝 Passa para um companheiro melhor posicionado.",
-                afirmacao: "Resposta incorreta."
+                afirmacao: ["Seu companheiro recebe livre e finaliza, mas o goleiro consegue defender.",
+                "Você faz um passe rasteiro para dentro da área, mas um defensor do Palmeiras aparece no último instante e corta.",
+                "O passe chega ao companheiro, que tenta cruzar para o meio. A defesa consegue afastar, mas o Flamengo continua pressionando.",
+            ]
             }
         ]
     },
@@ -49,11 +50,17 @@ const perguntas = [
         alternativas: [
             {
                 texto: "A) 🎯 Cobra o escanteio na direção de Danilo.",
-                afirmacao: "Resposta correta!"
+                afirmacao: ["A bola chega perfeita em Danilo. Ele sobe mais alto que os defensores e cabeceia para o gol! ⚽ GOOOOOOOL!",
+                "Você coloca a bola na pequena área. Danilo se antecipa ao marcador e desvia de cabeça para o fundo da rede! Gol do Flamengo!",
+                "A cobrança encontra Danilo completamente livre. Ele cabeceia forte, e o goleiro ainda toca na bola, mas não consegue evitar o gol!",
+            ]
             },
             {
                 texto: "B) 🔄 Faz um passe curto para outro jogador.",
-                afirmacao: "Resposta incorreta."
+                afirmacao: ["O companheiro recebe o passe, mas demora para cruzar. Um defensor chega e recupera a bola.",
+                "O passe curto funciona inicialmente, mas o Palmeiras fecha os espaços e consegue afastar a bola da área.",
+                "Você tenta uma jogada ensaiada, mas o passe sai forte demais. A defesa recupera e começa um contra-ataque.",
+            ]
             }
         ]
     },
@@ -62,11 +69,17 @@ const perguntas = [
         alternativas: [
             {
                 texto: "A) 🛡️ Volta para ajudar a defesa.",
-                afirmacao: "Resposta correta!"
+                afirmacao:["Você acompanha o atacante do Palmeiras e consegue bloquear o chute antes que ele chegue ao gol.",
+                "Você volta rapidamente e intercepta um passe perigoso dentro da área. A torcida comemora como se fosse gol!",
+                "Você ajuda a fechar os espaços e força o adversário a recuar. O Flamengo ganha alguns segundos preciosos.",
+                ]
             },
             {
                 texto: "B) 🚀 Continua no ataque para tentar marcar o segundo gol.",
-                afirmacao: "Resposta incorreta."
+                afirmacao:[" O Flamengo recupera a bola e você dispara no contra-ataque. Você recebe na frente do goleiro, mas a finalização passa raspando a trave!",
+                "Você recebe um lançamento perfeito, entra na área e chuta cruzado. O goleiro faz uma defesa espetacular.",
+                "Você consegue escapar da marcação e fica cara a cara com o goleiro. O chute é defendido, mas o Flamengo quase amplia a vantagem!",
+            ]
             }
         ]
     },
@@ -75,11 +88,18 @@ const perguntas = [
         alternativas: [
             {
                 texto: "A) 🛡️ Protege a bola e ajuda o time a controlar o jogo.",
-                afirmacao: "Resposta correta!"
+                afirmacao: ["Você protege a bola perto da bandeirinha de escanteio e sofre uma falta. O relógio continua correndo.",
+                "Você mantém a posse, troca passes com seus companheiros e faz o Palmeiras correr atrás da bola.",
+                " Você segura a bola com inteligência, espera o adversário chegar e consegue tocar para um companheiro. O Flamengo controla os últimos segundos.",
+            ]
             },
             {
                 texto: "B) ⚡ Parte para o ataque em busca do segundo gol.",
-                afirmacao: "Resposta incorreta."
+                afirmacao: ["Você tenta passar por dois defensores, mas perde a bola. Felizmente, um companheiro recupera rapidamente.",
+                "Você avança pelo meio e tenta um passe arriscado. O Palmeiras intercepta, mas a defesa do Flamengo consegue afastar.",
+                "Você parte em velocidade, mas é cercado por três jogadores. A bola sobra para o Palmeiras, que começa uma última tentativa de ataque.",
+
+            ]
             }
         ]
     }
@@ -93,7 +113,41 @@ function mostraPergunta() {
         mostraResultado();
         return;
     }
-
+    let atual = 0;
+    let historiaFinal = "";
+    
+    function mostraPergunta() {
+        if (atual >= perguntas.length) {
+            mostraResultado();
+            return;
+        }
+    
+        const perguntaAtual = perguntas[atual];
+        caixaPerguntas.textContent = perguntaAtual.enunciado;
+        caixaAlternativas.innerHTML = "";
+    
+        perguntaAtual.alternativas.forEach(alternativa => {
+            const botao = document.createElement("button");
+            botao.textContent = alternativa.texto;
+            botao.addEventListener("click", () => respostaSelecionada(alternativa));
+            caixaAlternativas.appendChild(botao);
+        });
+    }
+    
+    function respostaSelecionada(opcaoSelecionada) {
+        historiaFinal += opcaoSelecionada.afirmacao + " ";
+        atual++;
+        mostraPergunta();
+    }
+    
+    function mostraResultado() {
+        caixaPerguntas.textContent = "Quiz Finalizado!";
+        caixaAlternativas.innerHTML = "";
+        textoResultado.textContent = historiaFinal;
+        caixaResultado.style.display = "block";
+    }
+    
+    mostraPergunta();
     const perguntaAtual = perguntas[atual];
     caixaPerguntas.textContent = perguntaAtual.enunciado;
     caixaAlternativas.innerHTML = "";
